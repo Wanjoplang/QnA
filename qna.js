@@ -47,7 +47,7 @@ onAuthStateChanged(auth, (user) => {
             if(view_categories.value === "All"){
                 getQna(uid);
             }else{
-                onValue(ref(db, 'qna/qna/'+view_categories.value), (snapshot) => {
+                onValue(ref(db, 'questions_answers/qna/'+view_categories.value), (snapshot) => {
                     content.innerHTML = "";
                     const data = snapshot.val();
                     showData(data);
@@ -59,7 +59,7 @@ onAuthStateChanged(auth, (user) => {
             if(search_text.value !== ""){
                 window.find(search_text.value);
                 if(!queries.innerText.includes(search_text.value)){
-                    push(ref(db, 'qna/queries'), {
+                    push(ref(db, 'questions_answers/queries'), {
                         text: search_text.value
                     });
                 }
@@ -67,7 +67,7 @@ onAuthStateChanged(auth, (user) => {
         });
 
         save_category.addEventListener("click",function(e){
-            set(ref(db, 'qna/categories/'+category_name.value),{
+            set(ref(db, 'questions_answers/categories/'+category_name.value),{
                 category: category_name.value,
             }).then(()=>{
                 alert("Data saved successfully..");
@@ -80,7 +80,7 @@ onAuthStateChanged(auth, (user) => {
                 alert("Please provide a Category");
                 return;
             }
-            push(ref(db, 'qna/qna/'+add_categories.value),{
+            push(ref(db, 'questions_answers/qna/'+add_categories.value),{
                 question: editor1.getData(),
                 answer: editor2.getData(),
                 category: add_categories.value,
@@ -97,7 +97,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function getCategories(userId){
-    onValue(ref(db, 'qna/categories'), (snapshot) => {
+    onValue(ref(db, 'questions_answers/categories'), (snapshot) => {
         add_categories.innerHTML = "";
         category_tbody.innerHTML = "";
         let updates = {};
@@ -115,7 +115,7 @@ function getCategories(userId){
             if(all_checkboxes.checked){
                 document.querySelectorAll(".checkbox").forEach(checkbox=>{
                     checkbox.checked = true;
-                    updates['qna/categories/'+checkbox.dataset.key] = null;
+                    updates['questions_answers/categories/'+checkbox.dataset.key] = null;
                 });
             }else{
                 document.querySelectorAll(".checkbox").forEach(checkbox=>{
@@ -128,9 +128,9 @@ function getCategories(userId){
             checkbox.addEventListener("click",function(e){
                 all_checkboxes.checked = false;
                 if(checkbox.checked){
-                    updates['qna/categories/'+checkbox.dataset.key] = null;
+                    updates['questions_answers/categories/'+checkbox.dataset.key] = null;
                 }else{
-                    delete updates['qna/categories/'+checkbox.dataset.key];
+                    delete updates['questions_answers/categories/'+checkbox.dataset.key];
                 }
             });
         });
@@ -144,11 +144,11 @@ function getCategories(userId){
 }
 
 function getQueries(userId){
-    onValue(ref(db, 'qna/queries'), (snapshot) => {
+    onValue(ref(db, 'questions_answers/queries'), (snapshot) => {
         queries.innerHTML = "";
         const data = snapshot.val();
         for(let key in data){
-            onValue(ref(db, 'qna/queries/'+key), (snapshot) => {
+            onValue(ref(db, 'questions_answers/queries/'+key), (snapshot) => {
                 const data = snapshot.val();
                 queries.innerHTML += `<option>${data.text}</option>`;
             },{
@@ -161,14 +161,14 @@ function getQueries(userId){
 function getQna(userId){
     content.innerHTML = `<h1 class="text-2xl font-semibold text-center mt-10">Loading...</h1>
                     <p class="mt-5 text-gray-600 text-center">In case nothing loads, please check your internet connection and then Reload this page again.</p>`;
-    onValue(ref(db, 'qna/qna'), (snapshot) => {
+    onValue(ref(db, 'questions_answers/qna'), (snapshot) => {
         view_categories.innerHTML = "<option>All</option>";
         content.innerHTML = "";
         let updates = {};
         const data = snapshot.val();
         for(let key in data){
             view_categories.innerHTML += `<option>${key}</option>`;
-            onValue(ref(db, 'qna/qna/'+key), (snapshot) => {
+            onValue(ref(db, 'questions_answers/qna/'+key), (snapshot) => {
                 const data = snapshot.val();
                 showData(data, userId, updates);
             },{
@@ -206,7 +206,7 @@ function showData(data, uid, updates){
             if(select_all_qna.checked){
                 document.querySelectorAll(".individual_qna").forEach(checkbox=>{
                     checkbox.checked = true;
-                    updates['qna/qna/'+checkbox.dataset.key] = null;
+                    updates['questions_answers/qna/'+checkbox.dataset.key] = null;
                     console.log(updates);
                 });
             }else{
@@ -220,10 +220,10 @@ function showData(data, uid, updates){
             checkbox.addEventListener("click",function(e){
                 select_all_qna.checked = false;
                 if(checkbox.checked){
-                    updates['qna/qna/'+checkbox.dataset.key] = null;
+                    updates['questions_answers/qna/'+checkbox.dataset.key] = null;
                     console.log(updates);
                 }else{
-                    delete updates['qna/qna/'+checkbox.dataset.key];
+                    delete updates['questions_answers/qna/'+checkbox.dataset.key];
                     console.log(updates);
                 }
             });
@@ -241,7 +241,7 @@ function showData(data, uid, updates){
                 let question = document.querySelector("."+updateBtn.dataset.key+"_question").innerText;
                 let answer = document.querySelector("."+updateBtn.dataset.key+"_answer").innerText;
                 let category = document.querySelector("."+updateBtn.dataset.key+"_category").innerText;
-                update(ref(db, 'qna/qna/'+category+'/'+key),{
+                update(ref(db, 'questions_answers/qna/'+category+'/'+key),{
                     question: question,
                     answer: answer,
                     category: category,
