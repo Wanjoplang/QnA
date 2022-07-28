@@ -184,7 +184,10 @@ function showData(data, uid, updates){
             <div class="shadow-md p-2 bg-gray-100 border-l-slate-700 border-2 mb-5">
                 <div class="flex justify-between mb-5">
                     <input type="checkbox"  data-key="${data[d].category}/${d}" class="p-2 individual_qna" />
-                    <button class="font-semibold px-2 rounded-md update_qna" data-key="${d}">Update</button>
+                    <div>
+                        <button class="font-semibold px-2 rounded-md update_qna" data-key="${d}">Update</button>
+                        <button class="font-semibold px-2 rounded-md delete_individual_qna" data-key="${d}">Delete</button>
+                    </div>
                 </div>
                 <div class="flex items-center mb-2">
                     <small class="mr-2"><b>Category:</b></small>
@@ -233,20 +236,30 @@ function showData(data, uid, updates){
                 select_all_qna.checked = false;
                 updates = {};
             });
-        });
-        
+        });        
         document.querySelectorAll(".update_qna").forEach(updateBtn=>{
             updateBtn.addEventListener("click",function(e){
                 let key = updateBtn.dataset.key;
-                let question = document.querySelector("."+updateBtn.dataset.key+"_question").innerText;
-                let answer = document.querySelector("."+updateBtn.dataset.key+"_answer").innerText;
-                let category = document.querySelector("."+updateBtn.dataset.key+"_category").innerText;
+                let question = document.querySelector("."+key+"_question").innerText;
+                let answer = document.querySelector("."+key+"_answer").innerText;
+                let category = document.querySelector("."+key+"_category").innerText;
                 update(ref(db, 'questions_answers/qna/'+category+'/'+key),{
                     question: question,
                     answer: answer,
                     category: category,
                 }).then(()=>{
                     alert("Data updated successfully..");
+                });
+            });
+        });        
+        document.querySelectorAll(".delete_individual_qna").forEach(deleteBtn=>{
+            deleteBtn.addEventListener("click",function(e){
+                let key = deleteBtn.dataset.key;
+                let category = document.querySelector("."+key+"_category").innerText;
+                let itemToDelete = {};
+                itemToDelete['questions_answers/qna/'+category+'/'+key] = null;
+                update(ref(db), itemToDelete).then(()=>{
+                    itemToDelete = {};
                 });
             });
         });
