@@ -206,72 +206,72 @@ function showData(data, uid, updates){
             </div>
         `;
         content.innerHTML += contentinnerHTML;
-        
-        select_all_qna.addEventListener("click",function(e){
-            if(select_all_qna.checked){
-                document.querySelectorAll(".individual_qna").forEach(checkbox=>{
-                    checkbox.checked = true;
-                    updates['questions_answers/qna/'+checkbox.dataset.key] = null;
-                    console.log(updates);
-                });
-            }else{
-                document.querySelectorAll(".individual_qna").forEach(checkbox=>{
-                    checkbox.checked = false;
-                });
-                updates = {};
-            }
-        });
-        document.querySelectorAll(".individual_qna").forEach(checkbox=>{
-            checkbox.addEventListener("click",function(e){
-                select_all_qna.checked = false;
-                if(checkbox.checked){
-                    updates['questions_answers/qna/'+checkbox.dataset.key] = null;
-                    console.log(updates);
-                }else{
-                    delete updates['questions_answers/qna/'+checkbox.dataset.key];
-                    console.log(updates);
-                }
-            });
-        });
-        delete_qna.addEventListener("click",function(e){
-            if(confirm("Do you want to delete this?")){
-                update(ref(db), updates).then(()=>{
-                    select_all_qna.checked = false;
-                    updates = {};
-                });
-            }
-        });        
-        document.querySelectorAll(".update_qna").forEach(updateBtn=>{
-            updateBtn.addEventListener("click",function(e){
-                if(confirm("Do you want to update this?")){
-                    let key = updateBtn.dataset.key;
-                    let question = document.querySelector("."+key+"_question").innerText;
-                    let answer = document.querySelector("."+key+"_answer").innerText;
-                    let category = document.querySelector("."+key+"_category").innerText;
-                    update(ref(db, 'questions_answers/qna/'+category+'/'+key),{
-                        question: question,
-                        answer: answer,
-                        category: category,
-                    }).then(()=>{
-                        alert("Data updated successfully..");
-                    });
-                }
-            });
-        });        
-        document.querySelectorAll(".delete_individual_qna").forEach(deleteBtn=>{
-            deleteBtn.addEventListener("click",function(e){
-                if(confirm("Do you want to delete this?")){
-                    let key = deleteBtn.dataset.key;
-                    let category = document.querySelector("."+key+"_category").innerText;
-                    let itemToDelete = {};
-                    itemToDelete['questions_answers/qna/'+category+'/'+key] = null;
-                    update(ref(db), itemToDelete).then(()=>{
-                        itemToDelete = {};
-                    });
-                }
-            });
-        });
     }
+        
+    select_all_qna.addEventListener("click",function(e){
+        if(select_all_qna.checked){
+            document.querySelectorAll(".individual_qna").forEach(checkbox=>{
+                checkbox.checked = true;
+                updates['questions_answers/qna/'+checkbox.dataset.key] = null;
+                console.log(updates);
+            });
+        }else{
+            document.querySelectorAll(".individual_qna").forEach(checkbox=>{
+                checkbox.checked = false;
+            });
+            updates = {};
+        }
+    });
+    document.querySelectorAll(".individual_qna").forEach(checkbox=>{
+        checkbox.addEventListener("click",function(e){
+            select_all_qna.checked = false;
+            if(checkbox.checked){
+                updates['questions_answers/qna/'+checkbox.dataset.key] = null;
+                console.log(updates);
+            }else{
+                delete updates['questions_answers/qna/'+checkbox.dataset.key];
+                console.log(updates);
+            }
+        });
+    });
+    delete_qna.addEventListener("click",function(e){
+        if(confirm("Do you want to delete this?")){
+            update(ref(db), updates).then(()=>{
+                select_all_qna.checked = false;
+                updates = {};
+            });
+        }
+    });        
+    document.querySelectorAll(".update_qna").forEach(updateBtn=>{
+        updateBtn.addEventListener("click",function(e){
+            if(confirm("Do you want to update this?")){
+                let key = updateBtn.dataset.key;
+                let question = document.querySelector("."+key+"_question").innerText;
+                let answer = document.querySelector("."+key+"_answer").innerText;
+                let category = document.querySelector("."+key+"_category").innerText;
+                update(ref(db, 'questions_answers/qna/'+category+'/'+key),{
+                    question: question,
+                    answer: answer,
+                    category: category,
+                }).then(()=>{
+                    alert("Data updated successfully..");
+                });
+            }
+        });
+    });        
+    document.querySelectorAll(".delete_individual_qna").forEach(deleteBtn=>{
+        deleteBtn.addEventListener("click",function(e){
+            if(confirm("Do you want to delete this?")){
+                let key = deleteBtn.dataset.key;
+                let category = document.querySelector("."+key+"_category").innerText;
+                let itemToDelete = {};
+                itemToDelete['questions_answers/qna/'+category+'/'+key] = null;
+                update(ref(db), itemToDelete).then(()=>{
+                    itemToDelete = {};
+                });
+            }
+        });
+    });
 }
 
 ClassicEditor
