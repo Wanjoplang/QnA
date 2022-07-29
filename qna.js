@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-auth.js";
 import { getDatabase, ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -294,6 +294,19 @@ dots_vertical.addEventListener("click",function(e){
 pop_up_menu_items.forEach(function(pop_up_menu_item){ 
     pop_up_menu_item.addEventListener("click",function(e){
         pop_up_menu.toggleAttribute('hidden');
+        if(e.currentTarget.dataset.section === "signout"){
+            if(confirm("Do you want to sign out?")){
+                signOut(auth).then(() => {
+                    // Sign-out successful.
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorCode, errorMessage);
+                    alert(errorMessage);
+                });
+            }
+            return;
+        }
         if(e.currentTarget.dataset.section !== "close"){
             add_category.setAttribute('hidden',true);
             add.setAttribute('hidden',true);
