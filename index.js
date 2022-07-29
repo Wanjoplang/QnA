@@ -90,9 +90,9 @@ dots_vertical.addEventListener("click",function(e){
 });
 
 pop_up_menu_items.forEach(function(pop_up_menu_item){ 
-    pop_up_menu_item.addEventListener("click",function(e){        
+    pop_up_menu_item.addEventListener("click",function(e){     
+        pop_up_menu.toggleAttribute('hidden');   
         if(e.currentTarget.dataset.section !== "close"){
-            pop_up_menu.toggleAttribute('hidden');
             signin.setAttribute('hidden',true);
             signup.setAttribute('hidden',true);
             document.querySelector("#"+e.currentTarget.dataset.section).removeAttribute('hidden');
