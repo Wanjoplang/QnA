@@ -36,7 +36,7 @@ onAuthStateChanged(auth, (user)=>{
         });
 
         register.addEventListener("click",function(e){
-            if(email1.value !== confirm_password.value){
+            if(password1.value !== confirm_password.value){
                 alert("Password did not match");
                 return;
             }
