@@ -8,46 +8,6 @@ import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWith
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user)=>{
-    if(user){
-        window.open("qna.html","_self");
-    }else{
-        signin.removeAttribute('hidden');
-
-        login.addEventListener("click",function(e){
-            signIn(auth, email.value, password.value);
-        });
-    }
-});
-
-function signIn(auth, email, password){
-    console.log(auth, email, password);
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log("User Signed In");
-        // ...
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            console.log("User Created");
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-        });
-    });
-}
-
-
 const dots_vertical = document.querySelector(".dots-vertical");
 const pop_up_menu = document.querySelector(".pop-up-menu");
 const pop_up_menu_items = document.querySelectorAll(".pop-up-menu-item");
@@ -57,6 +17,68 @@ const login = document.querySelector("#login");
 const register = document.querySelector("#register");
 const email = document.querySelector("#email");
 const password = document.querySelector("#password");
+const email1 = document.querySelector("#email1");
+const password1 = document.querySelector("#password1");
+const confirm_password = document.querySelector("#confirm_password");
+
+onAuthStateChanged(auth, (user)=>{
+    if(user){
+        window.open("qna.html","_self");
+    }else{
+        signin.removeAttribute('hidden');
+
+        login.addEventListener("click",function(e){
+            if(email.value === "" || password.value === ""){
+                alert("Please enter Email id and Password");
+                return;
+            }
+            signIn(auth, email.value, password.value);
+        });
+
+        register.addEventListener("click",function(e){
+            if(email1.value !== confirm_password.value){
+                alert("Password did not match");
+                return;
+            }
+            if(email1.value === "" || password1.value === "" || confirm_password.value === ""){
+                alert("Please enter Email id and Password and confirm your password");
+                return;
+            }
+            signUp(auth, email1.value, password1.value);
+        });
+    }
+});
+
+function signUp(auth, email, password){
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        // User created 
+        const user = userCredential.user;
+        console.log("User Created");
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        alert(errorMessage);
+    });
+}
+
+function signIn(auth, email, password){
+    console.log(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log("User Signed In");
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        alert("User is not registered. Please Sign up to proceed.");    
+    });
+}
 
 signin.setAttribute('hidden', true);
 signup.setAttribute('hidden', true);
