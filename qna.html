@@ -39,15 +39,17 @@
                 <span class="text-left text-xl font-semibold">List of Categories</span>
                 <button class="bg-gray-200 text-gray-500 font-semibold px-2 rounded-md" id="delete_category">Delete</button>
             </div>
-            <table class="w-full">
-                <thead>
-                    <tr class="bg-gray-300">
-                        <td class="p-2 font-semibold">Category</td>
-                        <td class="p-2 text-right"><input type="checkbox" id="all_checkboxes"></td>
-                    </tr>
-                </thead>
-                <tbody id="category_tbody"></tbody>
-            </table>
+            <div class="h-96 overflow-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-300">
+                            <td class="p-2 font-semibold">Category</td>
+                            <td class="p-2 text-right"><input type="checkbox" id="all_checkboxes"></td>
+                        </tr>
+                    </thead>
+                    <tbody id="category_tbody"></tbody>
+                </table>
+            </div>
         </div>
     </section>
     <section class="p-5" id="add">
