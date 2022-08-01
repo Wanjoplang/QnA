@@ -6,12 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QnA</title>
     <link rel="stylesheet" href="output.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/34.2.0/ckeditor.min.js" integrity="sha512-rpy6z/f66611MGAFKrP+PE8q9TFUtG5otj76nLKLK/WYesZL1xgVeFzf37jyUWM0PHaF5vJxfrwIYjpG8Mwjag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.19.1/ckeditor.js" integrity="sha512-Ooi9IbjM2SIDjQ02ENbPFuuORT8F8Rc+rowcYfLneDwKRxw1+gVVj5tciVmV/APnA/Ys+qy1MbNKK3k2EaAHcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="firebaseConfig.js" defer></script>
     <script src="qna.js" type="module" defer></script>
-    <!-- <style>
-        *{border:1px solid grey;}
-    </style> -->
 </head>
 <body>
     <nav class="p-5 flex items-center justify-between">
@@ -59,9 +56,9 @@
             <option value="">Loading categories...</option>
         </select>
         <h1 class="text-xl my-4 text-gray-500">Type your <b>Question</b> in the box below..</h1>
-        <div id="editor1"></div>
+        <textarea cols="80" rows="10" id="editor1" name="editor1"></textarea>
         <h1 class="text-xl my-4 mt-10 text-gray-500">Type your <b>Answer</b> in the box below..</h1>
-        <div id="editor2"></div>
+        <textarea cols="80" rows="10" id="editor2" name="editor2"></textarea>
         <div class="mt-10 flex justify-center">
             <button class="rounded bg-blue-400 text-white py-2 w-full text-2xl" id="save">SAVE</button>
         </div>

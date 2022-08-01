@@ -274,21 +274,9 @@ function showData(data, uid, updates){
     });
 }
 
-ClassicEditor
-.create( document.querySelector('#editor1') )
-.then(e=>{
-    editor1 = e;
-})
-.catch( error => {
-});
+editor1 = CKEDITOR.replace('editor1');
 
-ClassicEditor
-.create( document.querySelector('#editor2') )
-.then(e=>{
-    editor2 = e;
-})
-.catch( error => {
-});
+editor2 = CKEDITOR.replace('editor2');
 
 view.setAttribute('hidden', true);
 add_category.setAttribute('hidden', true);
