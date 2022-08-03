@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut  } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-auth.js";
 import { getDatabase, ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 const dots_vertical = document.querySelector(".dots-vertical");
 const pop_up_menu = document.querySelector(".pop-up-menu");
@@ -27,15 +24,12 @@ const select_all_qna = document.querySelector("#select_all_qna");
 const delete_qna = document.querySelector("#delete_qna");
 let editor1, editor2;
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
         getCategories(uid);
         getQueries(uid);
@@ -91,7 +85,6 @@ onAuthStateChanged(auth, (user) => {
             });
         });
     } else {
-        // User is signed out
         window.open("index.html","_self");
     }
 });
@@ -135,11 +128,13 @@ function getCategories(userId){
             });
         });
         delete_category.addEventListener("click",function(e){
-            if(confirm("Do you want to delete this?")){
-                update(ref(db), updates).then(()=>{
-                    all_checkboxes.checked = false;
-                    updates = {};
-                });
+            if(all_checkboxes.checked){
+                if(confirm("Do you want to delete this?")){
+                    update(ref(db), updates).then(()=>{
+                        all_checkboxes.checked = false;
+                        updates = {};
+                    });
+                }
             }
         });
     });
@@ -197,23 +192,35 @@ function showData(data, uid, updates){
                 </div>
                 <div class="grid grid-flow-row mb-2">
                     <small><b>Question</b></small>
-                    <span contenteditable="true" class="${d}_question">${data[d].question}</span>
+                    <textarea cols="80" rows="10" class="editor" id="${d}_question"></textarea>
                 </div>
                 <div class="grid grid-flow-row">
                     <small><b>Answer</b></small>
-                    <span contenteditable="true" class="${d}_answer">${data[d].answer}</span>
+                    <textarea cols="80" rows="10" class="editor" id="${d}_answer"></textarea>
                 </div>
             </div>
         `;
         content.innerHTML += contentinnerHTML;
     }
+
+    document.querySelectorAll(".editor").forEach(editor=>{
+        let editorId = editor.id;
+        let questionKey = editorId.replace("_question","");
+        let answerKey = editorId.replace("_answer","");
+        let edtr = CKEDITOR.replace(editorId);
+        if(editorId.includes("_question")){
+            edtr.setData(data[questionKey].question);
+        }
+        if(editorId.includes("_answer")){
+            edtr.setData(data[answerKey].answer);
+        }
+    });
         
     select_all_qna.addEventListener("click",function(e){
         if(select_all_qna.checked){
             document.querySelectorAll(".individual_qna").forEach(checkbox=>{
                 checkbox.checked = true;
                 updates['questions_answers/qna/'+checkbox.dataset.key] = null;
-                console.log(updates);
             });
         }else{
             document.querySelectorAll(".individual_qna").forEach(checkbox=>{
@@ -227,27 +234,27 @@ function showData(data, uid, updates){
             select_all_qna.checked = false;
             if(checkbox.checked){
                 updates['questions_answers/qna/'+checkbox.dataset.key] = null;
-                console.log(updates);
             }else{
                 delete updates['questions_answers/qna/'+checkbox.dataset.key];
-                console.log(updates);
             }
         });
     });
     delete_qna.addEventListener("click",function(e){
-        if(confirm("Do you want to delete this?")){
-            update(ref(db), updates).then(()=>{
-                select_all_qna.checked = false;
-                updates = {};
-            });
+        if(select_all_qna.checked){
+            if(confirm("Do you want to delete this?")){
+                update(ref(db), updates).then(()=>{
+                    select_all_qna.checked = false;
+                    updates = {};
+                });
+            }
         }
     });        
     document.querySelectorAll(".update_qna").forEach(updateBtn=>{
         updateBtn.addEventListener("click",function(e){
             if(confirm("Do you want to update this?")){
                 let key = updateBtn.dataset.key;
-                let question = document.querySelector("."+key+"_question").innerText;
-                let answer = document.querySelector("."+key+"_answer").innerText;
+                let question = document.querySelector("#cke_"+key+"_question .cke_contents iframe").contentDocument.body.innerHTML;
+                let answer = document.querySelector("#cke_"+key+"_answer .cke_contents iframe").contentDocument.body.innerHTML;
                 let category = document.querySelector("."+key+"_category").innerText;
                 update(ref(db, 'questions_answers/qna/'+category+'/'+key),{
                     question: question,
@@ -293,11 +300,9 @@ pop_up_menu_items.forEach(function(pop_up_menu_item){
         if(e.currentTarget.dataset.section === "signout"){
             if(confirm("Do you want to sign out?")){
                 signOut(auth).then(() => {
-                    // Sign-out successful.
                 }).catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(errorCode, errorMessage);
                     alert(errorMessage);
                 });
             }

@@ -9,9 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/34.2.0/ckeditor.min.js" integrity="sha512-rpy6z/f66611MGAFKrP+PE8q9TFUtG5otj76nLKLK/WYesZL1xgVeFzf37jyUWM0PHaF5vJxfrwIYjpG8Mwjag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="firebaseConfig.js" defer></script>
     <script src="index.js" type="module" defer></script>
-    <!-- <style>
-        *{border:1px solid grey;}
-    </style> -->
 </head>
 <body class="px-10 pt-5">
     <nav class="flex items-center justify-between">
@@ -20,7 +17,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dots-vertical" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" />
             </svg>
-            <ul class="absolute right-0 w-40 shadow-md border-2 rounded pop-up-menu" hidden>
+            <ul class="absolute right-0 w-40 shadow-md border-2 rounded pop-up-menu">
                 <li class="p-2 hover:bg-gray-100 pop-up-menu-item" data-section="signin">Sign in</li>
                 <li class="p-2 hover:bg-gray-100 pop-up-menu-item" data-section="signup">Sign up</li>
                 <li class="p-2 hover:bg-gray-100 pop-up-menu-item text-red-600" data-section="close">Close</li>
@@ -35,7 +32,7 @@
             <button class="rounded bg-gray-400 text-white py-2 w-full text-2xl cursor-not-allowed" id="login" disabled>Login</button>
         </div>
     </section>
-    <section class="mt-10" id="signup" hidden>
+    <section class="mt-10" id="signup">
         <h1 class="text-xl my-4 text-gray-500"><b>Sign up</b></h1>
         <input type="email" placeholder="Type in your email id" class="w-full p-2 border-b-2 mt-5 outline-none" id="email1">
         <input type="password" placeholder="Type in your password" class="w-full p-2 border-b-2 mt-5 outline-none" id="password1">
