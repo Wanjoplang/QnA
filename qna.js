@@ -128,13 +128,11 @@ function getCategories(userId){
             });
         });
         delete_category.addEventListener("click",function(e){
-            if(all_checkboxes.checked){
-                if(confirm("Do you want to delete this?")){
-                    update(ref(db), updates).then(()=>{
-                        all_checkboxes.checked = false;
-                        updates = {};
-                    });
-                }
+            if(confirm("Do you want to delete this?")){
+                update(ref(db), updates).then(()=>{
+                    all_checkboxes.checked = false;
+                    updates = {};
+                });
             }
         });
     });
@@ -172,6 +170,7 @@ function getQna(userId){
                 onlyOnce: true
             });
         }
+        initCKEditor(data);
     });
 }
 
@@ -202,19 +201,6 @@ function showData(data, uid, updates){
         `;
         content.innerHTML += contentinnerHTML;
     }
-
-    document.querySelectorAll(".editor").forEach(editor=>{
-        let editorId = editor.id;
-        let questionKey = editorId.replace("_question","");
-        let answerKey = editorId.replace("_answer","");
-        let edtr = CKEDITOR.replace(editorId);
-        if(editorId.includes("_question")){
-            edtr.setData(data[questionKey].question);
-        }
-        if(editorId.includes("_answer")){
-            edtr.setData(data[answerKey].answer);
-        }
-    });
         
     select_all_qna.addEventListener("click",function(e){
         if(select_all_qna.checked){
@@ -279,6 +265,19 @@ function showData(data, uid, updates){
             }
         });
     });
+}
+
+function initCKEditor(data){
+    for(let i in data){
+        for(let j in data[i]){
+            let questionEditorId = j+"_question";
+            let answerEditorId = j+"_answer";
+            let questionEdtr = CKEDITOR.replace(questionEditorId);
+            let answerEdtr = CKEDITOR.replace(answerEditorId);
+            questionEdtr.setData(data[i][j].question);
+            answerEdtr.setData(data[i][j].answer);
+        }
+    }
 }
 
 editor1 = CKEDITOR.replace('editor1');
