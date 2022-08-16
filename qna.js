@@ -45,6 +45,7 @@ onAuthStateChanged(auth, (user) => {
                     content.innerHTML = "";
                     const data = snapshot.val();
                     showData(data);
+                    initCKEditor(data);
                 });
             }            
         });
