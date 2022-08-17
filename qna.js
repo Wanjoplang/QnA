@@ -45,7 +45,7 @@ onAuthStateChanged(auth, (user) => {
                     content.innerHTML = "";
                     const data = snapshot.val();
                     showData(data);
-                    initCKEditor(data);
+                    initCKEditorForSingle(data);
                 });
             }            
         });
@@ -171,7 +171,7 @@ function getQna(userId){
                 onlyOnce: true
             });
         }
-        initCKEditor(data);
+        initCKEditorForAll(data);
     });
 }
 
@@ -268,7 +268,7 @@ function showData(data, uid, updates){
     });
 }
 
-function initCKEditor(data){
+function initCKEditorForAll(data){
     for(let i in data){
         for(let j in data[i]){
             let questionEditorId = j+"_question";
@@ -278,6 +278,17 @@ function initCKEditor(data){
             questionEdtr.setData(data[i][j].question);
             answerEdtr.setData(data[i][j].answer);
         }
+    }
+}
+
+function initCKEditorForSingle(data){
+    for(let j in data){
+        let questionEditorId = j+"_question";
+        let answerEditorId = j+"_answer";
+        let questionEdtr = CKEDITOR.replace(questionEditorId);
+        let answerEdtr = CKEDITOR.replace(answerEditorId);
+        questionEdtr.setData(data[j].question);
+        answerEdtr.setData(data[j].answer);
     }
 }
 
